@@ -1,0 +1,19 @@
+<div class="px-3 py-3">
+  <div class="bg-white rounded-md h-full w-full px-3 py-3">
+    <h3>Charts</h3>
+    <ul class="flex flex-row justify-center items-center gap-10">
+      <li *ngFor="let chart of charts">
+        <mat-checkbox [(ngModel)]="chart.isVisible">
+          {{ chart.name }}
+        </mat-checkbox>
+      </li>
+    </ul>
+    <div class="flex justify-center align-top flex-wrap">
+      <app-chart
+        *ngFor="let chart of charts"
+        [isVisible]="chart.isVisible"
+        [chartName]="chart.name"
+      ></app-chart>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="px-3 py-3 border-gray-300" *ngIf="isVisible">
+  <div class="bg-gray-50 rounded-md w-full px-3 py-3 border border-gray-300">
+    <div
+      class="bg-white px-3 py-1 border border-gray-300 rounded-md flex justify-between items-center"
+    >
+      <mat-button-toggle-group
+        #group="matButtonToggleGroup"
+        (change)="changeChart($event)"
+        [value]="mainChartType$ | async"
+      >
+        <mat-button-toggle value="bar">
+          <mat-icon>bar_chart</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="line">
+          <mat-icon>show_chart</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <button mat-button (click)="updateColors()">
+        <mat-icon>invert_colors</mat-icon>
+      </button>
+
+      <mat-button-toggle-group
+        #group="matButtonToggleGroup"
+        (change)="changeAdditionalChart($event)"
+        [value]="mainChartType$ | async"
+      >
+        <mat-button-toggle
+          *ngFor="let chart of addtitionalCharts"
+          [value]="chart"
+          [aria-label]="chart"
+        >
+          {{ chart | uppercase | slice : 0 : 1 }}</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </div>
+    <div class="bg-white border my-3 w-full border-gray-300 rounded-md">
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        [options]="chartOptions"
+        [(update)]="updateFlag"
+      >
+      </highcharts-chart>
+    </div>
+  </div>
+</div>
