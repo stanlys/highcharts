@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as dayjs from 'dayjs';
-import { IChartsData, IPoints, ITypeOfGraph } from '../interfaces/chart';
+import {
+  IChartsData,
+  INewChart,
+  IPoints,
+  ITypeOfGraph,
+} from '../interfaces/chart';
 import { BehaviorSubject } from 'rxjs';
 import { DateService } from './date.service';
 
@@ -14,7 +19,19 @@ export class ChartService {
     });
   }
 
-  public chartData$ = new BehaviorSubject<IChartsData>(new Map());
+  public searchChartName$ = new BehaviorSubject<string>('');
+
+  // public chartData$ = new BehaviorSubject<IChartsData>(new Map());
+
+  public charts$ = new BehaviorSubject<INewChart[]>(
+    Object.keys(ITypeOfGraph)
+      .filter((el) => el !== ITypeOfGraph.none)
+      .map((el) => ({ name: el, isVisible: true, chartData: [] }))
+  );
+
+  private allCharts = Object.keys(ITypeOfGraph)
+    .filter((el) => el !== ITypeOfGraph.none)
+    .map((el) => ({ name: el, isVisible: true }));
 
   public getData(date: string = dayjs().format()): void {
     const newData: IChartsData = new Map();
@@ -22,7 +39,16 @@ export class ChartService {
     newData.set(ITypeOfGraph.humidity, this.generateValuesByDate(760, date));
     newData.set(ITypeOfGraph.wind, this.generateValuesByDate(20, date));
     newData.set(ITypeOfGraph.rainfall, this.generateValuesByDate(20, date));
-    this.chartData$.next(newData);
+    // this.chartData$.next(newData);
+    const _charts: Array<INewChart>= [];
+    newData.forEach((chartData, chartName) => {
+      _charts.push({
+        name: chartName,
+        isVisible: true,
+        chartData: chartData as never[],
+      });
+    });
+    this.charts$.next(_charts);
   }
 
   private generateValuesByDate(maxValue: number, date: string): IPoints {
@@ -32,5 +58,12 @@ export class ChartService {
 
   private generateValue(maxValue: number): number {
     return Math.round(Math.random() * maxValue) + 1;
+  }
+
+  public drawChartsByName(searchValue: string): void {
+    const _charts = this.allCharts.filter(
+      (chart) => !chart.name.indexOf(searchValue)
+    );
+    // this.charts$.next(_charts);
   }
 }

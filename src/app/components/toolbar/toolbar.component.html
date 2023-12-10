@@ -1,17 +1,18 @@
 <div class="px-3 py-3">
   <div class="flex items-center justify-between bg-white px-3 py-3 rounded-md">
-    <div class="flex items-center justify-between w-full">
+    <div class="flex flex-col items-center justify-between w-full md:flex-row">
       <a
         href="https://flowbite-admin-dashboard.vercel.app/"
         class="flex ml-2 md:mr-24"
       >
         <img src="./assets/concrete.svg" class="h-8 mr-3" alt="FlowBite Logo" />
         <span
-          class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap"
+          class="self-center text-xl font-semibold sm:hidden md:text-2xl whitespace-nowrap block"
           >Dashboard</span
         >
       </a>
-      <form action="#" method="GET" class="hidden lg:block lg:pl-3.5">
+
+      <form action="#" method="GET" class="lg:block lg:pl-3.5">
         <div class="relative mt-1 lg:w-96">
           <input
             type="date"
@@ -21,6 +22,7 @@
           />
         </div>
       </form>
+
       <form action="#" method="GET" class="hidden lg:block lg:pl-3.5">
         <label for="topbar-search" class="sr-only">Search</label>
         <div class="relative mt-1 lg:w-96">
@@ -41,9 +43,13 @@
             </svg>
           </div>
           <input
+            #searchChart
             type="text"
             name="email"
             id="topbar-search"
+            [value]="searchValue"
+            onkeyup=""
+            (onkey)="inputNewSearchValue($event)"
             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5"
             placeholder="Search"
           />

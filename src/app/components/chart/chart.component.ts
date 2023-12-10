@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   IChart,
   IChartType,
+  IPoints,
   ITypeOfGraph,
   TChartType,
 } from 'src/app/interfaces/chart';
@@ -31,61 +32,79 @@ export class ChartComponent implements IChart, OnInit {
   public mainGraphColor = `#000000`;
   public additionalGraphColor = `#000000`;
 
+  @Input() chartData!: IPoints;
+  @Input() chartType = 'bar';
+
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
   updateFlag = false;
 
   constructor(private chartService: ChartService) {
-    this.chartService.chartData$.subscribe((newChartData) => {
-      if (this.chartOptions.series) {
-        this.chartOptions.series[0] = {
-          type: this.mainChartType$.value,
-          data: this.chartService.chartData$.value.get(this.chartName),
-        };
-        const additionalChartType = this.additionalChartType$.value;
-        if (additionalChartType !== ITypeOfGraph.none) {
-          this.chartOptions.series[1] = {
-            type: 'line',
-            data: this.chartService.chartData$.value.get(additionalChartType),
-          };
-        }
-        this.updateFlag = true;
-      }
-    });
-
-    this.mainChartType$.subscribe((newType) => {
-      if (this.chartOptions.series) {
-        this.chartOptions.series[0] = {
-          type: IChartType[newType],
-        };
-        this.updateFlag = true;
-      }
-    });
-
-    this.additionalChartType$.subscribe((newChart) => {
-      if (!this.chartOptions.series) return;
-      this.chartOptions.series.pop();
-
-      if (newChart === ITypeOfGraph.none) {
-        this.chartOptions.series[1] = {
-          name: '',
-          type: 'line',
-          data: [0],
-        };
-        this.chartOptions.series[1].visible = false;
-        this.chartOptions.series[1].showInLegend = false;
-      } else {
-        this.chartOptions.series[1] = {
-          name: newChart,
-          type: 'line',
-          data: this.chartService.chartData$.value.get(newChart),
-          visible: true,
-          showInLegend: true,
-        };
-      }
-
+    console.log(this.chartData);
+    if (this.chartOptions.series) {
+      this.chartOptions.series[0] = {
+        type: this.mainChartType$.value,
+        data: this.chartData,
+      };
+      // const additionalChartType = this.additionalChartType$.value;
+      // if (additionalChartType !== ITypeOfGraph.none) {
+      //   this.chartOptions.series[1] = {
+      //     type: 'line',
+      //     data: this.chartService.chartData$.value.get(additionalChartType),
+      //   };
+      // }
       this.updateFlag = true;
-    });
+      // this.chartService.chartData$.subscribe((newChartData) => {
+      //   if (this.chartOptions.series) {
+      //     this.chartOptions.series[0] = {
+      //       type: this.mainChartType$.value,
+      //       data: this.chartData,
+      //     };
+      //     const additionalChartType = this.additionalChartType$.value;
+      //     if (additionalChartType !== ITypeOfGraph.none) {
+      //       this.chartOptions.series[1] = {
+      //         type: 'line',
+      //         data: this.chartService.chartData$.value.get(additionalChartType),
+      //       };
+      //     }
+      //     this.updateFlag = true;
+      //   }
+      // });
+
+      // this.mainChartType$.subscribe((newType) => {
+      //   if (this.chartOptions.series) {
+      //     this.chartOptions.series[0] = {
+      //       type: IChartType[newType],
+      //     };
+      //     this.updateFlag = true;
+      //   }
+      // });
+
+      // this.additionalChartType$.subscribe((newChart) => {
+      //   if (!this.chartOptions.series) return;
+      //   this.chartOptions.series.pop();
+
+      //   if (newChart === ITypeOfGraph.none) {
+      //     this.chartOptions.series[1] = {
+      //       name: '',
+      //       type: 'line',
+      //       data: [0],
+      //     };
+      //     this.chartOptions.series[1].visible = false;
+      //     this.chartOptions.series[1].showInLegend = false;
+      //   } else {
+      //     this.chartOptions.series[1] = {
+      //       name: newChart,
+      //       type: 'line',
+      //       data: this.chartData,
+      //       visible: true,
+      //       showInLegend: true,
+      //     };
+      //   }
+
+      //   this.updateFlag = true;
+      // });
+    }
   }
 
   public changeChart(e: any): void {
@@ -97,27 +116,23 @@ export class ChartComponent implements IChart, OnInit {
   }
 
   public updateColors(): void {
-    this.mainGraphColor = `#${Math.floor(Math.random() * 16777215).toString(
-      16
-    )}`;
-
-    this.additionalGraphColor = `#${Math.floor(
-      Math.random() * 16777215
-    ).toString(16)}`;
-
-    if (this.chartOptions.series) {
-      this.chartOptions.series[0] = {
-        type: this.mainChartType$.value,
-        color: this.mainGraphColor,
-      };
-
-      this.chartOptions.series[1] = {
-        type: 'line',
-        color: this.additionalGraphColor,
-      };
-    }
-
-    this.updateFlag = true;
+    // this.mainGraphColor = `#${Math.floor(Math.random() * 16777215).toString(
+    //   16
+    // )}`;
+    // this.additionalGraphColor = `#${Math.floor(
+    //   Math.random() * 16777215
+    // ).toString(16)}`;
+    // if (this.chartOptions.series) {
+    //   this.chartOptions.series[0] = {
+    //     type: this.mainChartType$.value,
+    //     color: this.mainGraphColor,
+    //   };
+    //   this.chartOptions.series[1] = {
+    //     type: 'line',
+    //     color: this.additionalGraphColor,
+    //   };
+    // }
+    // this.updateFlag = true;
   }
 
   ngOnInit(): void {
@@ -135,7 +150,7 @@ export class ChartComponent implements IChart, OnInit {
         {
           name: chartName,
           type: 'column',
-          data: this.chartService.chartData$.value.get(chartName),
+          data: this.chartData,
           color: this.mainGraphColor,
         },
         {

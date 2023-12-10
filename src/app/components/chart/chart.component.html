@@ -1,8 +1,26 @@
-<div class="px-3 py-3 border-gray-300" *ngIf="isVisible">
-  <div class="bg-gray-50 rounded-md w-full px-3 py-3 border border-gray-300">
+<div class="px-3 py-3 border-gray-300" *ngIf="isVisible" matTooltip="formGroup">
+  <div class="rounded-md w-full px-3 py-3 border border-gray-300">
     <div
-      class="bg-white px-3 py-1 border border-gray-300 rounded-md flex justify-between items-center"
+      class="px-3 py-1 border border-gray-300 rounded-md flex justify-between items-center"
     >
+      <button
+        mat-raised-button
+        role
+        [isViewerDisabled]="false"
+        [tooltipMessage]="'Not Admin'"
+        color="accent"
+      >
+        Accent
+      </button>
+      <button
+        mat-raised-button
+        role
+        [isViewerDisabled]="true"
+        [tooltipMessage]="'Not Admin'"
+        color="accent"
+      >
+        Accent
+      </button>
       <mat-button-toggle-group
         #group="matButtonToggleGroup"
         (change)="changeChart($event)"

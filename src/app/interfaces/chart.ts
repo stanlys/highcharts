@@ -33,3 +33,9 @@ export interface IChart {
   updateFlag: boolean;
   Highcharts: typeof Highcharts;
 }
+
+export type INewChart = {
+  name: string;
+  isVisible: boolean;
+  chartData: IPoints;
+};

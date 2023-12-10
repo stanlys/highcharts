@@ -8,11 +8,13 @@
         </mat-checkbox>
       </li>
     </ul>
+
     <div class="flex justify-center align-top flex-wrap">
       <app-chart
-        *ngFor="let chart of charts"
+        *ngFor="let chart of chartService.charts$ | async"
         [isVisible]="chart.isVisible"
         [chartName]="chart.name"
+        [chartData]="chart.chartData"
       ></app-chart>
     </div>
   </div>

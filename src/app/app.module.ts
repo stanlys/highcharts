@@ -14,6 +14,8 @@ import { AppComponent } from './app.component';
 import { ChartWrapperComponent } from './components/chart-wrapper/chart-wrapper.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { AdditionmatbuttonDirective } from './additionmatbutton.directive';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     ToolbarComponent,
     ChartWrapperComponent,
     ChartComponent,
+    AdditionmatbuttonDirective,
   ],
   imports: [
     BrowserModule,
